@@ -12,6 +12,7 @@ import flash.Lib;
 class Main extends Sprite 
 {
 	var inited:Bool;
+	var screen:StartScreen;
 
 	/* ENTRY POINT */
 	
@@ -26,7 +27,8 @@ class Main extends Sprite
 		if (inited) return;
 		inited = true;
 
-		// (your code here)
+		screen = new StartScreen();
+		addChild(screen);
 		
 		// Stage:
 		// stage.stageWidth x stage.stageHeight @ stage.dpiScale
