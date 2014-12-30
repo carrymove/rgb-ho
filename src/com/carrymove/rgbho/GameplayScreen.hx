@@ -7,9 +7,9 @@ import openfl.display.Sprite;
  */
 class GameplayScreen extends Screen
 {
-	var level:Int = 2;
+	var level:Int = 1;
 	var gridView:Sprite;
-	var grid:Array<UInt>;
+	var grid:Array<Unit>;
 	var blockSize:Float;
 	
 	public function new() 
@@ -30,21 +30,19 @@ class GameplayScreen extends Screen
 		blockSize = 480 / Math.pow(2, level);
 		
 		grid = [];
-		for (i in 0 ... Std.int(Math.pow(Math.pow(2, level), 2))) {
-		for (j in 0 ... Std.int(Math.pow(Math.pow(2, level), 2)))
-			grid[Std.int(j + i * blockSize)] = Std.int(Math.random() * 0xffffff);
+		for (i in 0 ... Std.int(Math.pow(2, level))) {
+		for (j in 0 ... Std.int(Math.pow(2, level)))
+			grid.push(new Unit(j * blockSize, i * blockSize, blockSize, blockSize, Std.int(Math.random() * 0xffffff)));
 		}
+		
+		trace(grid.length);
 	}
 	
 	function drawGrid():Void
 	{	
-		gridView.graphics.clear();
-		
 		for (iy in 0 ... Std.int(Math.pow(2, level)))
 		for (ix in 0 ... Std.int(Math.pow(2, level))) {
-			gridView.graphics.beginFill(grid[Std.int(ix + iy * blockSize)]);
-			gridView.graphics.drawRect(ix * blockSize, iy * blockSize, blockSize, blockSize);
-			gridView.graphics.endFill();
+			addChild(grid[Std.int(ix + iy * 480 / blockSize )]);
 		}
 	}
 	

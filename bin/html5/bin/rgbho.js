@@ -900,8 +900,9 @@ com_carrymove_rgbho_Main.prototype = $extend(openfl_display_Sprite.prototype,{
 		this.screen.removeEventListener(com_carrymove_rgbho_GameEvent.GAMEPLAY_START,$bind(this,this.onGameplayStart));
 		this.removeChild(this.screen);
 		this.screen.destroy();
-		this.screen = null;
-		haxe_Log.trace("Let's go!",{ fileName : "Main.hx", lineNumber : 49, className : "com.carrymove.rgbho.Main", methodName : "onGameplayStart"});
+		this.screen = new com_carrymove_rgbho_GameplayScreen();
+		this.addChild(this.screen);
+		haxe_Log.trace("Let's go!",{ fileName : "Main.hx", lineNumber : 50, className : "com.carrymove.rgbho.Main", methodName : "onGameplayStart"});
 	}
 	,added: function(e) {
 		this.removeEventListener(openfl_events_Event.ADDED_TO_STAGE,$bind(this,this.added));
@@ -1352,9 +1353,57 @@ com_carrymove_rgbho_Screen.prototype = $extend(openfl_display_Sprite.prototype,{
 	}
 	,__class__: com_carrymove_rgbho_Screen
 });
+var com_carrymove_rgbho_GameplayScreen = function() {
+	this.level = 6;
+	com_carrymove_rgbho_Screen.call(this);
+	this.gridView = new openfl_display_Sprite();
+	this.gridView.set_x(0);
+	this.gridView.set_y(0);
+	this.addChild(this.gridView);
+	this.fillGrid();
+	this.drawGrid();
+};
+$hxClasses["com.carrymove.rgbho.GameplayScreen"] = com_carrymove_rgbho_GameplayScreen;
+com_carrymove_rgbho_GameplayScreen.__name__ = ["com","carrymove","rgbho","GameplayScreen"];
+com_carrymove_rgbho_GameplayScreen.__super__ = com_carrymove_rgbho_Screen;
+com_carrymove_rgbho_GameplayScreen.prototype = $extend(com_carrymove_rgbho_Screen.prototype,{
+	fillGrid: function() {
+		this.blockSize = 480 / Math.pow(2,this.level);
+		this.grid = [];
+		var _g1 = 0;
+		var _g = Std["int"](Math.pow(2,this.level));
+		while(_g1 < _g) {
+			var i = _g1++;
+			var _g3 = 0;
+			var _g2 = Std["int"](Math.pow(2,this.level));
+			while(_g3 < _g2) {
+				var j = _g3++;
+				this.grid.push(new com_carrymove_rgbho_Unit(j * this.blockSize,i * this.blockSize,this.blockSize,this.blockSize,Std["int"](Math.random() * 16777215)));
+			}
+		}
+		haxe_Log.trace(this.grid.length,{ fileName : "GameplayScreen.hx", lineNumber : 38, className : "com.carrymove.rgbho.GameplayScreen", methodName : "fillGrid"});
+	}
+	,drawGrid: function() {
+		var _g1 = 0;
+		var _g = Std["int"](Math.pow(2,this.level));
+		while(_g1 < _g) {
+			var iy = _g1++;
+			var _g3 = 0;
+			var _g2 = Std["int"](Math.pow(2,this.level));
+			while(_g3 < _g2) {
+				var ix = _g3++;
+				this.addChild(this.grid[ix + iy * 480 / this.blockSize | 0]);
+			}
+		}
+	}
+	,__class__: com_carrymove_rgbho_GameplayScreen
+});
 var com_carrymove_rgbho_StartScreen = function() {
 	com_carrymove_rgbho_Screen.call(this);
-	this.buttonMode = true;
+	haxe_Log.trace("Click anywhere to start the game",{ fileName : "StartScreen.hx", lineNumber : 16, className : "com.carrymove.rgbho.StartScreen", methodName : "new"});
+	this.get_graphics().beginFill(16777215);
+	this.get_graphics().drawRect(0,0,800,480);
+	this.get_graphics().endFill();
 	this.addEventListener(openfl_events_MouseEvent.CLICK,$bind(this,this.onClick));
 };
 $hxClasses["com.carrymove.rgbho.StartScreen"] = com_carrymove_rgbho_StartScreen;
@@ -1372,6 +1421,60 @@ com_carrymove_rgbho_StartScreen.prototype = $extend(com_carrymove_rgbho_Screen.p
 		com_carrymove_rgbho_Screen.prototype.onFrame.call(this,e);
 	}
 	,__class__: com_carrymove_rgbho_StartScreen
+});
+var com_carrymove_rgbho_Unit = function(x,y,w,h,color) {
+	this.state = 0;
+	openfl_display_Sprite.call(this);
+	this.set_x(x);
+	this.set_y(y);
+	this.w = w;
+	this.h = h;
+	this.color = color;
+	this.addEventListener(openfl_events_MouseEvent.MOUSE_OVER,$bind(this,this.onMouseOver));
+	this.addEventListener(openfl_events_MouseEvent.MOUSE_OUT,$bind(this,this.onMouseOut));
+	this.addEventListener(openfl_events_MouseEvent.MOUSE_DOWN,$bind(this,this.onMouseDown));
+	this.addEventListener(openfl_events_MouseEvent.MOUSE_UP,$bind(this,this.onMouseUp));
+	this.draw();
+};
+$hxClasses["com.carrymove.rgbho.Unit"] = com_carrymove_rgbho_Unit;
+com_carrymove_rgbho_Unit.__name__ = ["com","carrymove","rgbho","Unit"];
+com_carrymove_rgbho_Unit.__super__ = openfl_display_Sprite;
+com_carrymove_rgbho_Unit.prototype = $extend(openfl_display_Sprite.prototype,{
+	onMouseOver: function(e) {
+		this.state = 1;
+		this.draw();
+	}
+	,onMouseOut: function(e) {
+		this.state = 0;
+		this.draw();
+	}
+	,onMouseDown: function(e) {
+		this.state = 2;
+		this.draw();
+	}
+	,onMouseUp: function(e) {
+		this.state = 0;
+		this.draw();
+	}
+	,draw: function() {
+		this.get_graphics().clear();
+		this.get_graphics().beginFill(this.color);
+		var _g = this.state;
+		switch(_g) {
+		case 0:
+			this.get_graphics().drawRect(0,0,this.w,this.h);
+			break;
+		case 1:
+			this.get_graphics().lineStyle(5,16777215,0.25);
+			this.get_graphics().drawRect(0,0,this.w,this.h);
+			break;
+		case 2:
+			this.get_graphics().drawRect(this.w / 10,this.h / 10,this.w - this.w / 10 * 2,this.h - this.h / 10 * 2);
+			break;
+		}
+		this.get_graphics().endFill();
+	}
+	,__class__: com_carrymove_rgbho_Unit
 });
 var haxe_StackItem = $hxClasses["haxe.StackItem"] = { __ename__ : true, __constructs__ : ["CFunction","Module","FilePos","Method","LocalFunction"] };
 haxe_StackItem.CFunction = ["CFunction",0];
