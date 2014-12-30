@@ -12,7 +12,7 @@ import flash.Lib;
 class Main extends Sprite 
 {
 	var inited:Bool;
-	var screen:StartScreen;
+	var screen:Screen;
 
 	/* ENTRY POINT */
 	
@@ -28,6 +28,7 @@ class Main extends Sprite
 		inited = true;
 
 		screen = new StartScreen();
+		screen.addEventListener(GameEvent.GAMEPLAY_START, onGameplayStart);
 		addChild(screen);
 		
 		// Stage:
@@ -38,6 +39,16 @@ class Main extends Sprite
 	}
 
 	/* SETUP */
+	
+	function onGameplayStart(e:Event):Void
+	{
+		screen.removeEventListener(GameEvent.GAMEPLAY_START, onGameplayStart);
+		removeChild(screen);
+		screen.destroy();
+		screen = new GameplayScreen();
+		addChild(screen);
+		trace("Let's go!");
+	}
 
 	public function new() 
 	{

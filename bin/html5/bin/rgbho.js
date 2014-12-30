@@ -893,7 +893,15 @@ com_carrymove_rgbho_Main.prototype = $extend(openfl_display_Sprite.prototype,{
 		if(this.inited) return;
 		this.inited = true;
 		this.screen = new com_carrymove_rgbho_StartScreen();
+		this.screen.addEventListener(com_carrymove_rgbho_GameEvent.GAMEPLAY_START,$bind(this,this.onGameplayStart));
 		this.addChild(this.screen);
+	}
+	,onGameplayStart: function(e) {
+		this.screen.removeEventListener(com_carrymove_rgbho_GameEvent.GAMEPLAY_START,$bind(this,this.onGameplayStart));
+		this.removeChild(this.screen);
+		this.screen.destroy();
+		this.screen = null;
+		haxe_Log.trace("Let's go!",{ fileName : "Main.hx", lineNumber : 49, className : "com.carrymove.rgbho.Main", methodName : "onGameplayStart"});
 	}
 	,added: function(e) {
 		this.removeEventListener(openfl_events_Event.ADDED_TO_STAGE,$bind(this,this.added));
@@ -1326,6 +1334,9 @@ Type.getClassFields = function(c) {
 	HxOverrides.remove(a,"prototype");
 	return a;
 };
+var com_carrymove_rgbho_GameEvent = function() { };
+$hxClasses["com.carrymove.rgbho.GameEvent"] = com_carrymove_rgbho_GameEvent;
+com_carrymove_rgbho_GameEvent.__name__ = ["com","carrymove","rgbho","GameEvent"];
 var com_carrymove_rgbho_Screen = function() {
 	openfl_display_Sprite.call(this);
 	this.addEventListener(openfl_events_Event.ENTER_FRAME,$bind(this,this.onFrame));
@@ -1343,13 +1354,21 @@ com_carrymove_rgbho_Screen.prototype = $extend(openfl_display_Sprite.prototype,{
 });
 var com_carrymove_rgbho_StartScreen = function() {
 	com_carrymove_rgbho_Screen.call(this);
-	haxe_Log.trace("Yeah! It works!",{ fileName : "StartScreen.hx", lineNumber : 15, className : "com.carrymove.rgbho.StartScreen", methodName : "new"});
+	this.buttonMode = true;
+	this.addEventListener(openfl_events_MouseEvent.CLICK,$bind(this,this.onClick));
 };
 $hxClasses["com.carrymove.rgbho.StartScreen"] = com_carrymove_rgbho_StartScreen;
 com_carrymove_rgbho_StartScreen.__name__ = ["com","carrymove","rgbho","StartScreen"];
 com_carrymove_rgbho_StartScreen.__super__ = com_carrymove_rgbho_Screen;
 com_carrymove_rgbho_StartScreen.prototype = $extend(com_carrymove_rgbho_Screen.prototype,{
-	onFrame: function(e) {
+	onClick: function(e) {
+		this.dispatchEvent(new openfl_events_Event(com_carrymove_rgbho_GameEvent.GAMEPLAY_START));
+	}
+	,destroy: function() {
+		com_carrymove_rgbho_Screen.prototype.destroy.call(this);
+		this.removeEventListener(openfl_events_MouseEvent.CLICK,$bind(this,this.onClick));
+	}
+	,onFrame: function(e) {
 		com_carrymove_rgbho_Screen.prototype.onFrame.call(this,e);
 	}
 	,__class__: com_carrymove_rgbho_StartScreen
@@ -16244,6 +16263,9 @@ if(window.createjs != null) createjs.Sound.alternateExtensions = ["ogg","mp3","w
 openfl_display_DisplayObject.__instanceCount = 0;
 openfl_display_DisplayObject.__worldRenderDirty = 0;
 openfl_display_DisplayObject.__worldTransformDirty = 0;
+com_carrymove_rgbho_GameEvent.GAMEPLAY_START = "gameplay_start";
+com_carrymove_rgbho_GameEvent.LEVEL_CLEAR = "level_clear";
+com_carrymove_rgbho_GameEvent.GAME_OVER = "game_over";
 js_Boot.__toStr = {}.toString;
 lime_Assets.cache = new lime_AssetCache();
 lime_Assets.libraries = new haxe_ds_StringMap();
