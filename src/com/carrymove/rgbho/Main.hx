@@ -47,7 +47,6 @@ class Main extends Sprite
 		screen.destroy();
 		screen = new GameplayScreen();
 		addChild(screen);
-		trace("Let's go!");
 	}
 
 	public function new() 

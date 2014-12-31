@@ -1,6 +1,7 @@
 package com.carrymove.rgbho;
 
 import openfl.display.Sprite;
+import openfl.events.Event;
 import openfl.events.MouseEvent;
 
 /**
@@ -54,6 +55,14 @@ class Unit extends Sprite
 	{
 		state = 0;
 		draw();
+		
+		var game:GameplayScreen = cast(parent, GameplayScreen);
+		cast(game, GameplayScreen);
+		if (game.needColor == color) {
+			parent.dispatchEvent(new Event(GameEvent.LEVEL_CLEAR));
+		} else {
+			parent.dispatchEvent(new Event(GameEvent.GAME_OVER));
+		}
 	}
 	
 	function draw():Void

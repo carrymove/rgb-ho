@@ -13,8 +13,6 @@ class StartScreen extends Screen
 	{
 		super();
 		
-		trace("Click anywhere to start the game");
-		
 		graphics.beginFill(0xffffff);
 		graphics.drawRect(0, 0, 800, 480);
 		graphics.endFill();
