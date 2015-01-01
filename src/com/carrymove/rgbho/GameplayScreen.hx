@@ -24,12 +24,15 @@ class GameplayScreen extends Screen
 	var statsView:TextField;
 	var manualView:TextField;
 	var statsViewFormat:TextFormat;
-	var hintButton:SimpleButton;
 	var bonusView:Sprite;
 	
-	public function new() 
+	public function new(level:Int = 1) 
 	{
+		trace("Level started (" + level + ")");
+		
 		super();
+		
+		this.level = level;
 		
 		gridView = new Sprite();
 		gridView.x = 0;
@@ -80,8 +83,6 @@ class GameplayScreen extends Screen
 		
 		fillGrid();
 		drawGrid();
-		
-		addEventListener(GameEvent.LEVEL_CLEAR, onLevelClear);
 	}
 	
 	function showHint():Void
@@ -94,13 +95,6 @@ class GameplayScreen extends Screen
 	function hideHint():Void
 	{
 		bonusView.alpha = 0;
-	}
-	
-	function onLevelClear(e:Event):Void
-	{
-		level++;
-		fillGrid();
-		drawGrid();
 	}
 	
 	function fillGrid():Void
@@ -135,6 +129,23 @@ class GameplayScreen extends Screen
 		}
 		
 		showHint();
+	}
+	
+	override public function destroy():Void 
+	{
+		super.destroy();
+		
+		for (i in 0 ... Std.int(Math.pow(2, level))) 
+		for (j in 0 ... Std.int(Math.pow(2, level))) {
+			removeChild(grid[Std.int(j + i * 480 / blockSize)]);
+			grid[Std.int(j + i * 480 / blockSize)].destroy();
+		}
+		
+		removeChild(gridView);
+		removeChild(colorView);
+		removeChild(statsView);
+		removeChild(manualView);
+		removeChild(bonusView);
 	}
 	
 }

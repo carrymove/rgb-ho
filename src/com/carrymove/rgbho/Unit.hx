@@ -82,4 +82,13 @@ class Unit extends Sprite
 		graphics.endFill();
 	}
 	
+	public function destroy():Void
+	{
+		graphics.clear();
+		
+		removeEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
+		removeEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
+		removeEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+		removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+	}
 }

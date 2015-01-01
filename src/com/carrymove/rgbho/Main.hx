@@ -13,6 +13,7 @@ class Main extends Sprite
 {
 	var inited:Bool;
 	var screen:Screen;
+	var currentLevel:Int = 1;
 
 	/* ENTRY POINT */
 	
@@ -45,7 +46,26 @@ class Main extends Sprite
 		screen.removeEventListener(GameEvent.GAMEPLAY_START, onGameplayStart);
 		removeChild(screen);
 		screen.destroy();
-		screen = new GameplayScreen();
+		screen = new GameplayScreen(currentLevel);
+		screen.addEventListener(GameEvent.LEVEL_CLEAR, onLevelClear);
+		addChild(screen);
+	}
+	
+	function onGameOver(e:Event):Void
+	{
+		screen.removeEventListener(GameEvent.GAME_OVER, onGameOver);
+		removeChild(screen);
+		screen.destroy();
+	}
+	
+	function onLevelClear(e:Event):Void
+	{
+		screen.removeEventListener(GameEvent.LEVEL_CLEAR, onLevelClear);
+		removeChild(screen);
+		screen.destroy();
+		currentLevel++;
+		screen = new GameplayScreen(currentLevel);
+		screen.addEventListener(GameEvent.LEVEL_CLEAR, onLevelClear);
 		addChild(screen);
 	}
 
