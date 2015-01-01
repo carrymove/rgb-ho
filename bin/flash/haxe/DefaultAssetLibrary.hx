@@ -44,11 +44,41 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		#if flash
 		
+		className.set ("img/gameover.png", __ASSET__img_gameover_png);
+		type.set ("img/gameover.png", AssetType.IMAGE);
+		className.set ("img/retry_button.png", __ASSET__img_retry_button_png);
+		type.set ("img/retry_button.png", AssetType.IMAGE);
+		className.set ("img/start.png", __ASSET__img_start_png);
+		type.set ("img/start.png", AssetType.IMAGE);
+		className.set ("img/start_button.png", __ASSET__img_start_button_png);
+		type.set ("img/start_button.png", AssetType.IMAGE);
+		className.set ("fonts/GothaProReg.otf", __ASSET__fonts_gothaproreg_otf);
+		type.set ("fonts/GothaProReg.otf", AssetType.FONT);
 		
 		
 		#elseif html5
 		
 		var id;
+		id = "img/gameover.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
+		id = "img/retry_button.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
+		id = "img/start.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
+		id = "img/start_button.png";
+		path.set (id, id);
+		
+		type.set (id, AssetType.IMAGE);
+		id = "fonts/GothaProReg.otf";
+		className.set (id, __ASSET__fonts_gothaproreg_otf);
+		
+		type.set (id, AssetType.FONT);
 		
 		
 		#else
@@ -56,11 +86,31 @@ class DefaultAssetLibrary extends AssetLibrary {
 		#if openfl
 		
 		
+		
+		
+		
+		openfl.text.Font.registerFont (__ASSET__fonts_gothaproreg_otf);
+		
 		#end
 		
 		#if (windows || mac || linux)
 		
 		/*var useManifest = false;
+		
+		className.set ("img/gameover.png", __ASSET__img_gameover_png);
+		type.set ("img/gameover.png", AssetType.IMAGE);
+		
+		className.set ("img/retry_button.png", __ASSET__img_retry_button_png);
+		type.set ("img/retry_button.png", AssetType.IMAGE);
+		
+		className.set ("img/start.png", __ASSET__img_start_png);
+		type.set ("img/start.png", AssetType.IMAGE);
+		
+		className.set ("img/start_button.png", __ASSET__img_start_button_png);
+		type.set ("img/start_button.png", AssetType.IMAGE);
+		
+		className.set ("fonts/GothaProReg.otf", __ASSET__fonts_gothaproreg_otf);
+		type.set ("fonts/GothaProReg.otf", AssetType.FONT);
 		*/
 		var useManifest = true;
 		
@@ -635,23 +685,39 @@ class DefaultAssetLibrary extends AssetLibrary {
 #if !display
 #if flash
 
+@:keep @:bind #if display private #end class __ASSET__img_gameover_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__img_retry_button_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__img_start_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__img_start_button_png extends flash.display.BitmapData { public function new () { super (0, 0, true, 0); } }
+@:keep @:bind #if display private #end class __ASSET__fonts_gothaproreg_otf extends flash.text.Font { }
 
 
 #elseif html5
 
 #if openfl
 
+
+
+
+@:keep #if display private #end class __ASSET__fonts_gothaproreg_otf extends openfl.text.Font { public function new () { super (); fontName = "fonts/GothaProReg.otf"; } } 
+
 #end
 
 #else
 
 #if openfl
+class __ASSET__fonts_gothaproreg_otf extends openfl.text.Font { public function new () { super (); __fontPath = "fonts/GothaProReg.otf"; fontName = "Gotham Pro"; }}
 
 #end
 
 #if (windows || mac || linux)
 
 //
+//@:bitmap("assets/img/gameover.png") class __ASSET__img_gameover_png extends openfl.display.BitmapData {}
+//@:bitmap("assets/img/retry_button.png") class __ASSET__img_retry_button_png extends openfl.display.BitmapData {}
+//@:bitmap("assets/img/start.png") class __ASSET__img_start_png extends openfl.display.BitmapData {}
+//@:bitmap("assets/img/start_button.png") class __ASSET__img_start_button_png extends openfl.display.BitmapData {}
+//@:font("assets/fonts/GothaProReg.otf") class __ASSET__fonts_gothaproreg_otf extends openfl.text.Font {}
 //
 //
 

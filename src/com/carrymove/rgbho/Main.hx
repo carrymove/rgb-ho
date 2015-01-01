@@ -48,24 +48,44 @@ class Main extends Sprite
 		screen.destroy();
 		screen = new GameplayScreen(currentLevel);
 		screen.addEventListener(GameEvent.LEVEL_CLEAR, onLevelClear);
+		screen.addEventListener(GameEvent.GAME_OVER, onGameOver);
 		addChild(screen);
 	}
 	
 	function onGameOver(e:Event):Void
 	{
+		screen.removeEventListener(GameEvent.LEVEL_CLEAR, onLevelClear);
 		screen.removeEventListener(GameEvent.GAME_OVER, onGameOver);
 		removeChild(screen);
 		screen.destroy();
+		screen = new GameOverScreen();
+		screen.addEventListener(GameEvent.RESTART, onRestart);
+		addChild(screen);
+	}
+	
+	function onRestart(e:Event):Void
+	{
+		screen.removeEventListener(GameEvent.RESTART, onRestart);
+		
+		currentLevel = 1;
+		removeChild(screen);
+		screen.destroy();
+		screen = new GameplayScreen(currentLevel);
+		screen.addEventListener(GameEvent.LEVEL_CLEAR, onLevelClear);
+		screen.addEventListener(GameEvent.GAME_OVER, onGameOver);
+		addChild(screen);
 	}
 	
 	function onLevelClear(e:Event):Void
 	{
 		screen.removeEventListener(GameEvent.LEVEL_CLEAR, onLevelClear);
+		screen.removeEventListener(GameEvent.GAME_OVER, onGameOver);
 		removeChild(screen);
 		screen.destroy();
 		currentLevel++;
 		screen = new GameplayScreen(currentLevel);
 		screen.addEventListener(GameEvent.LEVEL_CLEAR, onLevelClear);
+		screen.addEventListener(GameEvent.GAME_OVER, onGameOver);
 		addChild(screen);
 	}
 

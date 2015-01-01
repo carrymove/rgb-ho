@@ -27,6 +27,26 @@ class ApplicationMain {
 		var types = [];
 		
 		
+		urls.push ("img/gameover.png");
+		types.push (AssetType.IMAGE);
+		
+		
+		urls.push ("img/retry_button.png");
+		types.push (AssetType.IMAGE);
+		
+		
+		urls.push ("img/start.png");
+		types.push (AssetType.IMAGE);
+		
+		
+		urls.push ("img/start_button.png");
+		types.push (AssetType.IMAGE);
+		
+		
+		urls.push ("fonts/GothaProReg.otf");
+		types.push (AssetType.FONT);
+		
+		
 		
 		preloader.load (urls, types);
 		#end

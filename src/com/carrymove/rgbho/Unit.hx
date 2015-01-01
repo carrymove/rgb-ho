@@ -1,5 +1,6 @@
 package com.carrymove.rgbho;
 
+import motion.Actuate;
 import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.events.MouseEvent;
@@ -19,8 +20,8 @@ class Unit extends Sprite
 	{
 		super();
 		
-		this.x = x;
-		this.y = y;
+		this.x = x + 0.125 * w;
+		this.y = y + 0.125 * h;
 		this.w = w;
 		this.h = h;
 		this.color = color;
@@ -29,8 +30,14 @@ class Unit extends Sprite
 		addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
 		addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 		addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+	
+		scaleX = 0.75;
+		scaleY = 0.75;
 		
 		draw();
+		
+		useHandCursor = true;
+		buttonMode = true;
 	}
 	
 	function onMouseOver(e:MouseEvent):Void

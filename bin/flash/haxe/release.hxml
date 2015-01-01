@@ -8,11 +8,13 @@
 -cp src
 -D lime-openal
 -D tools=2.0.3
+-D flash-use-stage
 -D no-compilation
 -D lime-opengl
 -D openfl-flash
 -D lime-curl
 -D web
+-swf-lib bin/flash/obj/assets.swf
 -swf-version 11.2
 -swf bin/flash/bin/rgbho.swf
 -swf-header 800:480:60:FFFFFF

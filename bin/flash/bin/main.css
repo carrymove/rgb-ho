@@ -1,0 +1,8 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+div#page {
+  display: inline-block;
+  width: 800;
+}

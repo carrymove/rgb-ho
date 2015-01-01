@@ -1,8 +1,10 @@
 package com.carrymove.rgbho;
 import motion.Actuate;
 import motion.easing.Quad;
+import openfl.Assets;
 import openfl.display.SimpleButton;
 import openfl.events.Event;
+import openfl.text.Font;
 import openfl.text.TextFormat;
 import openfl.text.TextField;
 import openfl.display.Sprite;
@@ -12,8 +14,11 @@ import openfl.text.TextFormatAlign;
  * ...
  * @author ildarkarymoff
  */
+ 
 class GameplayScreen extends Screen
 {
+	private static var mainFont:Font;
+	
 	var level:Int = 1;
 	var gridView:Sprite;
 	var grid:Array<Unit>;
@@ -28,7 +33,6 @@ class GameplayScreen extends Screen
 	
 	public function new(level:Int = 1) 
 	{
-		trace("Level started (" + level + ")");
 		
 		super();
 		
@@ -39,11 +43,14 @@ class GameplayScreen extends Screen
 		gridView.y = 0;
 		addChild(gridView);
 		
-		colorViewFormat = new TextFormat("Gotham Pro", 36);
+		mainFont = Assets.getFont("fonts/GothaProReg.otf");
+		
+		colorViewFormat = new TextFormat(mainFont.fontName, 36);
 		colorViewFormat.align = TextFormatAlign.LEFT;
 		
 		colorView = new TextField();
 		colorView.defaultTextFormat = colorViewFormat;
+		colorView.embedFonts = true;
 		colorView.selectable = false;
 		colorView.width = 280;
 		colorView.x = 500;
@@ -51,10 +58,11 @@ class GameplayScreen extends Screen
 		colorView.text = "#FFFFFF";
 		addChild(colorView);
 		
-		statsViewFormat = new TextFormat("Gotham Pro", 14);
+		statsViewFormat = new TextFormat(mainFont.fontName, 14);
 		
 		manualView = new TextField();
 		manualView.defaultTextFormat = statsViewFormat;
+		manualView.embedFonts = true;
 		manualView.selectable = false;
 		manualView.width = 280;
 		manualView.multiline = true;
@@ -66,6 +74,7 @@ class GameplayScreen extends Screen
 		
 		statsView = new TextField();
 		statsView.defaultTextFormat = statsViewFormat;
+		statsView.embedFonts = true;
 		statsView.selectable = false;
 		statsView.width = 280;
 		statsView.multiline = true;
@@ -125,7 +134,14 @@ class GameplayScreen extends Screen
 		
 		for (iy in 0 ... Std.int(Math.pow(2, level)))
 		for (ix in 0 ... Std.int(Math.pow(2, level))) {
-			addChild(grid[Std.int(ix + iy * 480 / blockSize )]);
+			var block:Unit = grid[Std.int(ix + iy * 480 / blockSize )];
+			Actuate.tween(block, 1, {
+				x: block.x - 0.125 * blockSize,
+				y: block.y - 0.125 * blockSize,
+				scaleX: 1,
+				scaleY: 1
+			}).delay((ix + iy * 480 / blockSize) / 100);
+			addChild(block);
 		}
 		
 		showHint();
